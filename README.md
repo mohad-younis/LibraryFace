@@ -1,64 +1,83 @@
 # LibraryFace
 
-LibraryFace is a Python-based application designed to manage and process datasets related to anime, movies, and TV shows. It provides utilities for handling icons, searching metadata, and managing layouts for user interfaces.
+**LibraryFace** is a smart desktop tool that transforms plain media folders into a beautifully organized library.  
+It automatically sets custom folder icons and posters for anime, movies, and TV shows using real metadata from APIs like TMDb, Jikan, and OMDb.
 
-## Features
+---
 
-- **Dataset Management**: Includes tools to clean and process datasets for anime, movies, and TV shows.
-- **Icon Utilities**: Convert, fetch, and manage icons for various media.
-- **Metadata Search**: Search and normalize metadata using APIs like Jikan, OMDB, and TMDB.
-- **UI Layouts**: Predefined layouts for application settings, popups, and match layouts.
-- **Undo Utilities**: Tools to undo changes made to icons and posters.
-- **Handlers**: General and specific handlers for managing application workflows.
+## ✨ Features
 
-## Project Structure
+- 🔍 **Metadata Recognition**: Detect titles, seasons, parts, and more from messy folder names.
+- 🖼 **Poster Fetching**: Automatically grab high-quality posters from TMDb, Jikan, or OMDb.
+- 🎨 **Folder Icon Generation**: Turn any folder into a visually recognizable media tile.
+- 🧠 **Intelligent Title Normalization**: Clean and format folder names using advanced rules.
+- 🧰 **Undo & Restore Tools**: Roll back any icon or poster change with one click.
+- 🖥 **Custom UI**: Built with `customtkinter`, offering a clean and intuitive interface.
 
-- **assets/**: Contains datasets and media assets like icons and images.
-- **build/**: Generated files and packages for the application.
-- **core/**: Core configuration and assets for the application.
-- **hooks/**: Custom hooks for integrating with external libraries.
-- **logic/**: Core logic for handling tasks, utilities, and metadata.
-- **ui/**: User interface components and layouts.
-- **handlers/**: Handlers for managing workflows and options.
-- **helpers/**: Helper scripts for expanding, logging, and managing paths.
+---
 
-## Getting Started
+## 🗂 Project Structure (Simplified)
 
-1. Clone the repository:
-   ```powershell
-   git clone <repository-url>
-   ```
+| Folder        | Purpose                                         |
+|---------------|-------------------------------------------------|
+| `assets/`     | Datasets and default icons/images               |
+| `core/`       | Core settings and app branding                  |
+| `logic/`      | All core logic: iconify, search, undo, metadata |
+| `ui/`         | UI components and layouts (Tkinter-based)       |
+| `hooks/`      | PyInstaller or packaging-related hooks          |
+| `.gitignore`  | Keeps your repo clean from generated files      |
 
-2. Navigate to the project directory:
-   ```powershell
+---
+
+## 🚀 Getting Started
+
+1. **Clone the repo**:
+   ```bash
+   git clone https://github.com/mohad-younis/LibraryFace.git
    cd LibraryFace
    ```
 
-3. Install dependencies:
-   ```powershell
+2. **Install requirements**:
+   ```bash
    pip install -r requirements.txt
    ```
 
-4. Run the application:
-   ```powershell
+3. **Run the app**:
+   ```bash
    python main.py
    ```
 
-## Requirements
+> You must be connected to the internet for poster downloading to work.
 
-- Python 3.10 or higher
-- Required Python libraries (listed in `requirements.txt`)
+---
 
-## Contributing
+## 📦 Requirements
 
-Contributions are welcome! Please fork the repository and submit a pull request.
+- Python 3.10+
+- `requests`, `customtkinter`, `pandas`, `Pillow`, and others (see `requirements.txt`)
 
-## License
+---
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+## 🤝 Contributing
 
-## Acknowledgments
+Got an idea or fix?  
+Fork the repo → create a branch → submit a pull request — we’d love your help!
 
-- [Jikan API](https://jikan.moe/) for anime metadata.
-- [OMDB API](https://www.omdbapi.com/) for movie metadata.
-- [TMDB API](https://www.themoviedb.org/) for TV show metadata.
+---
+
+## 📄 License
+
+All rights reserved.  
+This software is proprietary and may not be copied, distributed, reverse-engineered, or modified in any form without explicit written permission from the author.
+
+---
+
+## 🙏 Acknowledgments
+
+- [TMDb](https://www.themoviedb.org/)
+- [Jikan API](https://jikan.moe/)
+- [OMDb](https://www.omdbapi.com/)
+
+---
+
+> _“Let your folders speak for your collection.”_

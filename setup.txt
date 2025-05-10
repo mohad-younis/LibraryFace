@@ -1,0 +1,37 @@
+D:
+cd LibraryFace
+
+pyinstaller --noconsole --onefile ^
+--add-data "assets/LibraryFace.ico;assets" ^
+--add-data "assets/LibraryFace.png;assets" ^
+--add-data "assets/anime_dataset.csv;assets" ^
+--add-data "assets/tv_show_dataset.csv;assets" ^
+--add-data "assets/movie_dataset.csv;assets" ^
+--add-data "C:\\Users\\Mo Younis\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\babelfish\\data\\iso-3166-1.txt;babelfish\\data" ^
+--add-data "C:\\Users\\Mo Younis\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\babelfish\\data\\iso15924-utf8-20131012.txt;babelfish\\data" ^
+--add-data "C:\\Users\\Mo Younis\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\babelfish\\data\\iso-639-3.tab;babelfish\\data" ^
+--add-data "C:\\Users\\Mo Younis\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\babelfish\\data\\opensubtitles_languages.txt;babelfish\\data" ^
+--collect-submodules babelfish.converters ^
+--additional-hooks-dir=hooks ^
+main.py
+
+
+
+while True:
+    raw_title = input("Enter the title: ").strip()
+    if not raw_title:
+        print("No title provided.")
+        break
+
+    base_title = extract_base(raw_title)
+    season_str = extract_season(raw_title)
+    part_str = extract_part(raw_title)
+    year_str = extract_year(raw_title)
+    clean_title = f"{base_title} {season_str} {part_str} ({year_str})".strip()
+    clean_title = re.sub(r"\s+", " ", clean_title).strip()
+    print(clean_title)
+
+    try_again = input("Press Enter to try again or type 'n' to stop: ").strip().lower()
+    if try_again and try_again != 'y':
+        break
+

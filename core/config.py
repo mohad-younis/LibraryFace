@@ -15,7 +15,6 @@ from customtkinter import CTkImage
 from pathlib import Path
 import sys
 import os
-from guessit import guessit
 import ctypes
 import pandas as pd
 import json
