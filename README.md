@@ -80,4 +80,4 @@ This software is proprietary and may not be copied, distributed, reverse-enginee
 
 ---
 
-> _“Let your folders speak for your collection.”_
+> _“Let your folders speak for themselves.”_
