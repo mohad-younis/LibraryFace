@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Installer logs
+env.log
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+*.cover
+*.py,cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# Pyre
+.pyre/
+
+# Caches
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+
+# Images and assets
+*.psd
+
+
+main.spec
+LibraryFace.iss
+New Text Document.txt
+LibraryFaceSetup.exe
