@@ -23,10 +23,10 @@ def extract_season(raw_title: str):
     if not season_match:
         season_match = re.search(r'[Ss](\d{1,2})[Ee](\d{1,3})', raw_title)  # S02E24
     if season_match:
-        season_num = int(season_match.group(2))
-        prefix = "Final " if final_season else ""
-        if season_num != 1 or prefix:
-            season_str = f"{prefix}Season {season_num}"
+        season_num_raw = season_match.group(2) if season_match.lastindex >= 2 else season_match.group(1)
+        season_num = int(season_num_raw)
+        if season_num != 1 and not final_season:
+            season_str = f"Season {season_num}"
     elif final_season:
         season_str = "Final Season"
     else:
@@ -75,62 +75,76 @@ def extract_year(raw_title: str):
 def extract_base(raw_title: str):
     raw_title = raw_title.lower()
 
+    # Remove Year ------------------------------------------------------------------------------------------
+
     # 1. Remove year like 2012, 1999, etc.
     raw_title = re.sub(r"[\[\(\{<\. _-]?(19|20)\d{2}[\]\)\}>\. _-]?", " ", raw_title)
 
+    # ------------------------------------------------------------------------------------------
+
     # 2. Remove Roman numeral math like "IV + V"
     raw_title = re.sub(r'(?:\s|^)([IVXLCM]+(?:\s*\+\s*[IVXLCM]+)+)(?=\s|$)', '', raw_title, flags=re.IGNORECASE)
-
     # 3. Remove Arabic numeral math like "1 + 2"
     raw_title = re.sub(r'(?:\s|^)(\d+(?:\s*\+\s*\d+)+)(?=\s|$)', '', raw_title)
 
-    # 3. Remove "S01E12"
+    # Remove Season & Episode ------------------------------------------------------------------------------------------
+
+    # 4. Remove "S01E12"
     raw_title = re.sub(r'[Ss]\d{1,2}[Ee]\d{1,3}', '', raw_title, flags=re.IGNORECASE)
-    # 4. Remove episode patterns like "S01E01", "Season 1 Ep12", etc.
+    # 5. Remove episode patterns like "S01E01", "Season 1 Ep12", etc.
     raw_title = re.sub(
         r'(?i)(s(eason)?[\s._-]?\d{1,2}[\s._-]*)?e(p(isode)?)?[\s._-]?\d{1,3}.*',
         lambda m: m.group(0) if m.group(1) is None else m.group(1), raw_title
     )
 
-    # 5. If format is "Season 2E10" → keep "Season 2"
+    # Remove Season ------------------------------------------------------------------------------------------
+    
+    # 6. If format is "Season 2E10" → keep "Season 2"
     raw_title = re.sub(r"(Season \d{1,2})[Ee](\d{1,3})", r"\1", raw_title, flags=re.IGNORECASE)
     raw_title = re.sub(r"\bthe[\s._-]+final[\s._-]+season\b", "", raw_title, flags=re.IGNORECASE)
     raw_title = re.sub(r"\bfinal[\s._-]+season\b", "", raw_title, flags=re.IGNORECASE)   
     for word, number in NUMBER_WORDS.items():
-        raw_title = re.sub(rf'\b{word} season\b', f'season {number}', raw_title)
-    # Step 2: Replace '2nd season', '3rd season', etc
+        raw_title = re.sub(rf'\b{word} season\b', '', raw_title)
+    # 7. Replace '2nd season', '3rd season', etc
     raw_title = re.sub(r'\b(\d{1,2})(st|nd|rd|th)[\s._-]*season\b', '', raw_title)
-    # 6. Remove patterns like "Season 1" or "s1"
+    # 8. Remove patterns like "Season 1" or "s1"
     raw_title = re.sub(r'\b(?:s(?:eason)?[\s._-]?\d{1,2})\b', '', raw_title, flags=re.IGNORECASE)
 
-    # 7. Remove single episode indicators like "E12", "e-05", "e_7"
+    # Remove Episode ------------------------------------------------------------------------------------------
+    
+    # 9. Remove single episode indicators like "E12", "e-05", "e_7"
     raw_title = re.sub(r"\b[Ee][\s._-]?\d{1,3}\b", "", raw_title, flags=re.IGNORECASE)
-    # 8. Remove verbose episode indicators like "Ep10", "Episode-10", "Ep_10"
+    # 10. Remove verbose episode indicators like "Ep10", "Episode-10", "Ep_10"
     raw_title = re.sub(r"\b(?:Ep(?:isode)?)[\s._-]*\d{1,3}\b", "", raw_title, flags=re.IGNORECASE)
-    # 9. Remove stand-alone "Ep"
+    # 11. Remove stand-alone "Ep"
     raw_title = re.sub(r"\b[Ee][p]?\b", "", raw_title)
-    # 10. Remove episode ranges like "Ep 01-03" or "02~05"
+    # 12. Remove episode ranges like "Ep 01-03" or "02~05"
     raw_title = re.sub(r"\b(Ep?\.?|)[\d]{1,3}[\-~to]{1,3}[\d]{1,3}\b", "", raw_title, flags=re.IGNORECASE)
-    # 11. Remove episode ranges like "01–03"
+    # 13. Remove episode ranges like "01–03"
     raw_title = re.sub(r"\b\d{1,3}[\-~to]{1,3}\d{1,3}\b", "", raw_title, flags=re.IGNORECASE)
 
-    # 12. Remove "Part 1", "p-2", etc.
+    # Remove Part ------------------------------------------------------------------------------------------
+
+    # 14. Remove "Part 1", "p-2", etc.
+    for roman, num in ROMAN_NUMERALS.items():
+        raw_title = re.sub(rf'\b{roman}\b', num, raw_title)
     raw_title = re.sub(r"\b(part|p)[\s._-]?\d{1,2}\b", "", raw_title, flags=re.IGNORECASE)
     raw_title = re.sub(r"\bfinal[\s._-]+part\b", "", raw_title, flags=re.IGNORECASE)
     raw_title = re.sub(r"\bthe[\s._-]+final[\s._-]+part\b", "", raw_title, flags=re.IGNORECASE)
 
-    # 13. Remove trailing dash titles like "-v2"
-    #raw_title = re.sub(r"(^|\s)-\s*[A-Za-z0-9]+$", "", raw_title)
+    # Remove junk ------------------------------------------------------------------------------------------
 
-    # 14. Replace " & " with " and "
+    # 15. Replace " & " with " and "
     raw_title = re.sub(r"\s*&\s*", " and ", raw_title)
-    # 15. Replace ":" with space
+    # 16. Replace ":" with space
     raw_title = re.sub(r"\s*:\s*", " ", raw_title)
-    # 16. Remove brackets and their content
+    # 17. Remove brackets and their content
     raw_title = re.sub(r"\[.*?\]|\(.*?\)", "", raw_title)
-    # 17. Replace ".", "-", "_" with space
+    # 18. Replace ".", "-", "_" with space
     raw_title = re.sub(r"[._\-]", " ", raw_title)
    
+    # Remove Unwanted Words ------------------------------------------------------------------------------------------
+
     unwanted = [
         "1080p", "720p", "480p", "2160p", "1080", "720", "480", "2160", "4K", "8K", "8bit", "10bit", "BD", "EngDub", "EnglishDub", "EnglishSub", 
         "Erai raws", "Erai", "raw", "HDR", "BDR", "BRR", "HDRip", "BluRay", "BDRip", "BRRip", "WEBRip", "WEB", 
@@ -155,3 +169,18 @@ def extract_base(raw_title: str):
     base_title = raw_title
     
     return base_title
+
+while True:
+    raw_title = input("Enter the title: ").strip()
+    if not raw_title:
+        print("No title provided.")
+        break
+
+    base_title = extract_base(raw_title)
+    season_str = extract_season(raw_title)
+    part_str = extract_part(raw_title)
+    year_str = extract_year(raw_title)
+    clean_title = f"({base_title}) ({season_str}) ({part_str}) ({year_str})".strip()
+    clean_title = re.sub(r"\s+", " ", clean_title).strip()
+    print(clean_title)
+

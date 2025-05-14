@@ -27,7 +27,7 @@ while True:
     season_str = extract_season(raw_title)
     part_str = extract_part(raw_title)
     year_str = extract_year(raw_title)
-    clean_title = f"{base_title} {season_str} {part_str} ({year_str})".strip()
+    clean_title = f"({base_title}) ({season_str}) ({part_str}) ({year_str})".strip()
     clean_title = re.sub(r"\s+", " ", clean_title).strip()
     print(clean_title)
 

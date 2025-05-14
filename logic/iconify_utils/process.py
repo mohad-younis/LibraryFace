@@ -24,7 +24,7 @@ def process(folder, manual=False) -> Tuple[str, str, str, str, str, str]:
         original_name = os.path.basename(folder)
         check_pause()
         
-        anime_title, tv_title, movie_title, content_type, final_folder_name, poster_url, anime_poster, tv_poster, movie_poster, matched_title = build_titles(original_name, manual=manual)
+        anime_title, tv_title, movie_title, content_type, final_folder_name, poster_url, anime_poster, tv_poster, movie_poster, matched_title = build_titles(original_name, folder, manual=manual)
         final_folder_name = final_folder_name.title()
 
         check_pause()

@@ -1,3 +1,4 @@
+import os
 from .normalize_title import extract_base, extract_part, extract_season, extract_year
 from .match_title import find_match
 
@@ -18,11 +19,15 @@ def build_final_name(content_type, base_title, season_str="", part_str="", year_
     if x
     ).strip()
 
-def build_titles(raw_title:str, manual=False):
+def build_titles(raw_title:str, folder, manual=False):
     base_title = extract_base(raw_title)
     season_str = extract_season(raw_title)
     part_str = extract_part(raw_title)
     year_str = extract_year(raw_title)
+
+    if not base_title:
+        parent_title = os.path.basename(os.path.dirname(folder))
+        base_title = extract_base(parent_title)
 
     matched_title, content_type, poster_url, anime_poster, tv_poster, movie_poster = find_match(base_title, year_str, season_str, part_str, manual=manual)
 
