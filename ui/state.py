@@ -11,6 +11,7 @@ visibility_var = ctk.StringVar(value="hidden")
 rename_folders_var = ctk.BooleanVar(value=False)
 view_mode = ctk.StringVar(value="Panel")
 select_all_undo_var = ctk.BooleanVar(value=False)
+apply_all_var = ctk.BooleanVar(value=False)
 
 # UI flags
 log_expanded = False

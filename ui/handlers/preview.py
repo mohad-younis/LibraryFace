@@ -41,11 +41,7 @@ def load_preview_list():
             poster["clean_title"],
             poster["content_type"]
         )
-        layout.undo_btn.grid(row=0, column=0, padx=(0, 45))
-        layout.prev_btn.grid(row=0, column=1, padx=(0, 5))
-        layout.counter_label.grid(row=0, column=2, padx=(0, 5))
-        layout.next_btn.grid(row=0, column=3, padx=(0, 45))
-        layout.expand_btn.grid(row=0, column=4, padx=0)
+        layout.preview_buttons_frame.pack(fill="x")
 
 def show_next_poster():
     if state.preview_posters and 0 <= state.current_index < len(state.preview_posters) - 1:

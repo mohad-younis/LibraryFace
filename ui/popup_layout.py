@@ -2,6 +2,7 @@ from core.config import (
     DISABLED_COLOR, ctk, tk, root,
     Main_BACKGROUND, TEXT_PRIMARY, TEXT_SECONDARY, PANNELS, ACCENT_COLOR, HOVER_COLOR
 )
+from ui import state
 
 def build_choice_popup(parent, normalized, on_choice):
     popup = tk.Toplevel(parent)
@@ -89,7 +90,11 @@ def build_choice_popup(parent, normalized, on_choice):
     button_row.pack(padx=5, pady=(0, 10), fill="x")
  
     def on_click(label):  # lock the label value
-        on_choice(label)
+        choice_data = {
+            "label": label,
+            "apply_all": state.apply_all_var.get()
+        }
+        on_choice(choice_data)
         popup.destroy()
 
     for index, (label, emoji) in enumerate([("Anime", "🎌"), ("TV Show", "📺"), ("Movies", "🎬")]):
@@ -124,6 +129,23 @@ def build_choice_popup(parent, normalized, on_choice):
         height=30
     )
     skip_btn.pack(side="right")
+
+    apply_all_checkbox = ctk.CTkCheckBox(
+        skip_frame,
+        text="Apply to all remaining folders",
+        variable=state.apply_all_var,
+        font=("Segoe UI", 11), 
+        text_color=TEXT_SECONDARY,
+        checkbox_width=14,
+        checkbox_height=14,
+        corner_radius=3,
+        border_color=DISABLED_COLOR,
+        checkmark_color=Main_BACKGROUND,
+        fg_color=DISABLED_COLOR,
+        hover_color=DISABLED_COLOR
+    )
+    apply_all_checkbox.pack(side="left")
+
 
     def update_popup_position(event):
         if not popup.winfo_exists():

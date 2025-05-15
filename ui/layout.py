@@ -381,9 +381,14 @@ def build_ui():
     type_label = ctk.CTkLabel(titles_frame, text="Type: ", font=("Segoe UI", 11), wraplength=250, text_color=TEXT_PRIMARY, justify="left")
     type_label.pack(anchor="w", pady=(0, 20))
 
+    global preview_buttons_frame
     preview_buttons_frame = ctk.CTkFrame(info_frame, fg_color="transparent", corner_radius=6, width=260, height=50)
-    preview_buttons_frame.pack(fill="x")
+    preview_buttons_frame.pack_forget()
     preview_buttons_frame.pack_propagate(False)
+
+    preview_buttons_frame.grid_columnconfigure(0, weight=1)
+    preview_buttons_frame.grid_columnconfigure(1, weight=0)
+    preview_buttons_frame.grid_columnconfigure(2, weight=1)
 
     # Undo Button
     global undo_btn
@@ -400,12 +405,15 @@ def build_ui():
     normal_undo_btn = ("Segoe UI", 15)
     bold_undo_btn = ("Segoe UI", 16, "bold")
     apply_hover_bold(undo_btn, normal_undo_btn, bold_undo_btn)
-    undo_btn.grid_forget()
+    undo_btn.grid(row=0, column=0, sticky="w", padx=10)
+
+    center_frame = ctk.CTkFrame(preview_buttons_frame, fg_color="transparent")
+    center_frame.grid(row=0, column=1)
 
     # Previous Button
     global prev_btn
     prev_btn = ctk.CTkButton(
-        preview_buttons_frame,
+        center_frame,
         text="◀",
         font=("Segoe UI", 15),
         width=32,
@@ -417,17 +425,17 @@ def build_ui():
     normal = ("Segoe UI", 15)
     bold = ("Segoe UI", 16, "bold")
     apply_hover_bold(prev_btn, normal, bold)
-    prev_btn.grid_forget()
+    prev_btn.pack(in_=center_frame, side="left", padx=(0, 5))
 
     # Counter Label (no hover styling needed)
     global counter_label
-    counter_label = ctk.CTkLabel(preview_buttons_frame, text="0 / 0", font=("Segoe UI", 12), text_color=TEXT_PRIMARY)
-    counter_label.grid_forget()
+    counter_label = ctk.CTkLabel(center_frame, text="0 / 0", font=("Segoe UI", 12), text_color=TEXT_PRIMARY)
+    counter_label.pack(in_=center_frame, side="left", padx=(0, 5))
 
     # Next Button
     global next_btn
     next_btn = ctk.CTkButton(
-        preview_buttons_frame,
+        center_frame,
         text="▶",
         font=("Segoe UI", 15),
         width=32,
@@ -437,7 +445,7 @@ def build_ui():
         command=show_next_poster
     )
     apply_hover_bold(next_btn, normal, bold)
-    next_btn.grid_forget()
+    next_btn.pack(in_=center_frame, side="left", padx=(0, 5))
 
     # Expand Button
     global expand_btn
@@ -454,11 +462,11 @@ def build_ui():
     normal_expand_btn = ("Segoe UI", 15)
     bold_expand_btn = ("Segoe UI", 16, "bold")
     apply_hover_bold(expand_btn, normal_expand_btn, bold_expand_btn)
-    expand_btn.grid_forget()
-
+    expand_btn.grid(row=0, column=2, sticky="e", padx=10)
+    
    # 📝 Left Side - Log Box
     log_frame = ctk.CTkFrame(content_frame, fg_color="transparent", width=250)
-    log_frame.pack(side="right", expand=True, padx=(0, 10))
+    log_frame.pack(side="right", expand=True, pady=(0, 10), padx=(0, 10))
     log_frame.pack_propagate(False)
 
     operation_log = ctk.CTkLabel(log_frame, text="Operation Log", font=("Segoe UI", 13, "bold"))

@@ -43,11 +43,7 @@ def on_undo_click():
             # Just refresh the current poster without trying to navigate
             refresh_current_poster()
         else:
-            layout.undo_btn.grid_forget()
-            layout.prev_btn.grid_forget()
-            layout.counter_label.grid_forget()
-            layout.next_btn.grid_forget()
-            layout.expand_btn.grid_forget()
+            layout.preview_buttons_frame.pack_forget()
             layout.folder_name_label.configure(text=f'Folder Name:')
             layout.clean_title_label.configure(text=f'Clean Title:')
             layout.type_label.configure(text=f'Content Type:')
@@ -104,11 +100,7 @@ def on_apply_changes():
         
         if not state.preview_posters:
             hide_expand_window()
-            layout.undo_btn.grid_forget()
-            layout.prev_btn.grid_forget()
-            layout.counter_label.grid_forget()
-            layout.next_btn.grid_forget()
-            layout.expand_btn.grid_forget()
+            layout.preview_buttons_frame.pack_forget()
             layout.folder_name_label.configure(text=f'Folder Name:')
             layout.clean_title_label.configure(text=f'Clean Title:')
             layout.type_label.configure(text=f'Content Type:')

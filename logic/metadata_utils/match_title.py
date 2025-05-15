@@ -11,6 +11,10 @@ from ui.helpers.popup import show_choice_popup
 
 debug = False
 
+manual_choice_cache = {}
+global_manual_fallback = None
+use_fallback_for_all = False
+
 anime_df = pd.read_csv(ANIME_DATASET)
 tv_df = pd.read_csv(TV_DATASET)
 movie_df = pd.read_csv(MOVIE_DATASET)
@@ -18,6 +22,7 @@ movie_df = pd.read_csv(MOVIE_DATASET)
 datasets = [("Anime", anime_df), ("TV Show", tv_df), ("Movies", movie_df)]
 
 def find_match(base_title, year="", season="", part="", manual=False):
+    global global_manual_fallback, use_fallback_for_all
     best_match = None
     best_title = None
     best_match_anime = None
@@ -29,8 +34,19 @@ def find_match(base_title, year="", season="", part="", manual=False):
         add_log(f"Base title: {base_title}")
 
     if manual:
-        selected = show_choice_popup(base_title)
+        if use_fallback_for_all and global_manual_fallback:
+            selected = global_manual_fallback
+        elif base_title in manual_choice_cache:
+            selected = manual_choice_cache[base_title]
+        else:
+            result = show_choice_popup(base_title)
+            selected = result["label"]
+            manual_choice_cache[base_title] = selected
+            if result["apply_all"]:
+                use_fallback_for_all = True
+                global_manual_fallback = selected
         return "", selected, "", "", "", ""
+
     else:
         for content_type, df in datasets:
             check_parts = base_title.lower().split()

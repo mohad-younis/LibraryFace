@@ -155,7 +155,7 @@ def extract_base(raw_title: str):
         "Subbed", "Hardsub", "Softsub", "RAW", "Scan", "ESub", "Hindi", "Arabic", "Jap", "JPN", "VOSTFR", 
         "VO", "VF", "NF", "AMZN", "HMAX", "DSNP", "Crunchyroll", "Funimation", "Netflix", "Disney", "HBO", 
         "iTunes", "Remux", "Proper", "Repack", "Uncensored", "Censored", 
-        "Sample", "Trailer", "Featurette", "Behind the Scenes", "Extras", "Bonus", "Clip", 
+        "Sample", "Trailer", "Featurette", "Behind the Scenes", "Extras", "Bonus", "Clip", "Copy",
         "Batch", "Mini-Series", "Eng", "Sub", 
         "Ep", "SD", "HD", "FullHD", "UltraHD", "UHD",  
         "YIFY", "RARBG", "PSA", "QxR", "FGT", "Erai-raws", "HorribleSubs", "SubsPlease", "AnimeRG", 
@@ -169,18 +169,3 @@ def extract_base(raw_title: str):
     base_title = raw_title
     
     return base_title
-
-while True:
-    raw_title = input("Enter the title: ").strip()
-    if not raw_title:
-        print("No title provided.")
-        break
-
-    base_title = extract_base(raw_title)
-    season_str = extract_season(raw_title)
-    part_str = extract_part(raw_title)
-    year_str = extract_year(raw_title)
-    clean_title = f"({base_title}) ({season_str}) ({part_str}) ({year_str})".strip()
-    clean_title = re.sub(r"\s+", " ", clean_title).strip()
-    print(clean_title)
-

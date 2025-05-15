@@ -67,11 +67,7 @@ def on_start():
         
         state.set_content_type = state.content_type_var.get()
 
-        layout.undo_btn.grid_forget()
-        layout.prev_btn.grid_forget()
-        layout.counter_label.grid_forget()
-        layout.next_btn.grid_forget()
-        layout.expand_btn.grid_forget()
+        layout.preview_buttons_frame.pack_forget()
         layout.folder_name_label.configure(text=f'Folder Name:')
         layout.clean_title_label.configure(text=f'Clean Title:')
         layout.type_label.configure(text=f'Content Type:')
